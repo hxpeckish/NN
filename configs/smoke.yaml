@@ -1,0 +1,17 @@
+seed: 42
+device: cpu
+artifact_dir: artifacts/smoke
+num_mics: 4
+batch_size: 2
+steps: 5
+lr: 0.001
+
+dummy_samples: 20
+dummy_frames: 10
+dummy_freqs: 257
+
+stft:
+  n_fft: 512
+  hop_length: 256
+  win_length: 512
+  center: true
