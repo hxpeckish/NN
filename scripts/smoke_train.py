@@ -20,12 +20,14 @@ def load_config(path: Path) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config", required=True)
+    parser.add_argument("--device", default=None)
+    parser.add_argument("--steps", type=int, default=None)
     args = parser.parse_args()
 
     config = load_config(Path(args.config))
     torch.manual_seed(int(config.get("seed", 0)))
 
-    device = torch.device(config.get("device", "cpu"))
+    device = torch.device(args.device or config.get("device", "cpu"))
     artifact_dir = Path(config.get("artifact_dir", "artifacts"))
     artifact_dir.mkdir(parents=True, exist_ok=True)
 
@@ -47,7 +49,7 @@ def main() -> None:
     optimizer = torch.optim.Adam(model.parameters(), lr=float(config.get("lr", 1e-3)))
 
     log_path = artifact_dir / "smoke_train_log.jsonl"
-    steps = int(config.get("steps", 5))
+    steps = int(args.steps if args.steps is not None else config.get("steps", 5))
 
     model.train()
     step = 0

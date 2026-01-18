@@ -21,10 +21,11 @@ def load_config(path: Path) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config", required=True)
+    parser.add_argument("--device", default=None)
     args = parser.parse_args()
 
     config = load_config(Path(args.config))
-    device = torch.device(config.get("device", "cpu"))
+    device = torch.device(args.device or config.get("device", "cpu"))
     artifact_dir = Path(config.get("artifact_dir", "artifacts"))
     artifact_dir.mkdir(parents=True, exist_ok=True)
 
